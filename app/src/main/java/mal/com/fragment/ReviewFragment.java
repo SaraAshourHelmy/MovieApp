@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -86,7 +87,11 @@ public class ReviewFragment extends Fragment {
             if (bundle.containsKey("url_reviews"))
                 urlReviews = bundle.getString("url_reviews");
 
-            new MovieReviews().execute();
+            if (NetworkHelper.isNetworkAvailable(getActivity()))
+                new MovieReviews().execute();
+            else {
+                Toast.makeText(getActivity(), "No Internet Connection", Toast.LENGTH_SHORT).show();
+            }
         }
     }
 
