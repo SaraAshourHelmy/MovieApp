@@ -1,7 +1,6 @@
 package mal.com.adapters;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -53,7 +52,7 @@ public class MovieAdapter extends BaseAdapter {
         ImageView imgV_poster = (ImageView) convertView.findViewById(R.id.imgV_poster);
         String img_url = context.getResources().getString(R.string.url_img) + "w185/" +
                 lst_movie.get(position).getPoster();
-        Log.e("img_url", img_url);
+        //Log.e("img_url", img_url);
         Picasso.with(context).load(img_url).placeholder(R.drawable.loading).error(R.drawable.no_img)
                 .into(imgV_poster);
 

@@ -97,8 +97,14 @@ public class MovieFragment extends Fragment implements AdapterView.OnItemClickLi
         grd_movies.setAdapter(movieAdapter);
         grd_movies.smoothScrollToPosition(pos);
 
-        if (first)
+        if (first) {
+            Log.e("first","true");
             callMovieData();
+        }
+        else
+        {
+            Log.e("first","false");
+        }
 
 
     }
@@ -249,6 +255,7 @@ public class MovieFragment extends Fragment implements AdapterView.OnItemClickLi
     }
 
     private void callMovieData() {
+
         if (NetworkHelper.isNetworkAvailable(getActivity()))
             new MovieData().execute(getURL());
         else {

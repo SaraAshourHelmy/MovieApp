@@ -61,24 +61,28 @@ public class ReviewFragment extends Fragment {
 
     private void initViews(View view) {
 
-        if (first)
+        if (first) {
+            adapter_reviews = null;
             lst_reviews = new ArrayList<>();
+        }
 
         lstV_reviews = (ListView) view.findViewById(R.id.lstV_reviews);
         tv_noReview = (TextView) view.findViewById(R.id.tv_noReviews);
-        adapter_reviews = new ReviewsAdapter(getActivity(), new ArrayList<Review>());
+
 
         if (lst_reviews.size() == 0 && !first)
             tv_noReview.setVisibility(View.VISIBLE);
         else
             tv_noReview.setVisibility(View.GONE);
 
-        lstV_reviews.setAdapter(adapter_reviews);
+        if (adapter_reviews != null)
+            lstV_reviews.setAdapter(adapter_reviews);
+
         lstV_reviews.setVerticalScrollbarPosition(pos);
 
         if (first) {
 
-            Bundle bundle = getArguments();
+            Bundle bundle = getActivity().getIntent().getExtras();
             if (bundle.containsKey("url_reviews"))
                 urlReviews = bundle.getString("url_reviews");
 
@@ -111,8 +115,9 @@ public class ReviewFragment extends Fragment {
             super.onPostExecute(s);
             if (dialog != null)
                 dialog.dismiss();
-            adapter_reviews.AddALL(lst_reviews);
-            
+            adapter_reviews = new ReviewsAdapter(getActivity(), lst_reviews);
+            lstV_reviews.setAdapter(adapter_reviews);
+
             if (lst_reviews.size() == 0)
                 tv_noReview.setVisibility(View.VISIBLE);
             else

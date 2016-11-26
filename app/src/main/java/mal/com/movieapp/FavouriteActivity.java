@@ -11,25 +11,33 @@ import mal.com.fragment.MovieDetailsFragment;
 
 public class FavouriteActivity extends AppCompatActivity implements MovieInterface {
 
-    private boolean isTowPane = false;
+    private static boolean isTowPane = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_favourite);
-        initView();
+        initView(savedInstanceState);
     }
 
-    private void initView() {
-        FavouriteFragment favFragment = new FavouriteFragment();
-        favFragment.setMovieInterface(this);
-        getFragmentManager().beginTransaction()
-                .add(R.id.fl_frgFav, favFragment, "").commit();
+    private void initView(Bundle bundle) {
+        FavouriteFragment favFragment;
+        if (bundle == null) {
+            isTowPane = false;
+            favFragment = new FavouriteFragment();
 
-        if (null != findViewById(R.id.fl_frgDetails)) {
-            isTowPane = true;
-            Log.e("tablet", "true");
+            getFragmentManager().beginTransaction()
+                    .add(R.id.fl_frgFav, favFragment, "favFragment").commit();
+
+            if (null != findViewById(R.id.fl_frgDetails)) {
+                isTowPane = true;
+                Log.e("tablet", "true");
+            }
+        } else {
+            favFragment = (FavouriteFragment) getFragmentManager().findFragmentByTag("favFragment");
         }
+        favFragment.setMovieInterface(this);
+
 
     }
 

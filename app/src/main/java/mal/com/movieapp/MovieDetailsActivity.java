@@ -7,26 +7,27 @@ import mal.com.fragment.MovieDetailsFragment;
 
 public class MovieDetailsActivity extends AppCompatActivity {
 
-    private boolean isTowPane = false;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_movie_details);
-        initViews();
+        initViews(savedInstanceState);
     }
 
-    private void initViews() {
+    private void initViews(Bundle bundle) {
 
-        MovieDetailsFragment detailsFragment = new MovieDetailsFragment();
-        detailsFragment.setArguments(getIntent().getBundleExtra("bundle"));
-        //detailsFragment.setReviewInterface(this);
-        getFragmentManager().beginTransaction().add(R.id.fl_frgDetails, detailsFragment, "")
-                .commit();
-        // if (null != findViewById(R.id.fl_frgReviews)) {
-        //   isTowPane = true;
+        if (bundle == null) {
+            MovieDetailsFragment detailsFragment = new MovieDetailsFragment();
+            detailsFragment.setArguments(getIntent().getBundleExtra("bundle"));
+            getFragmentManager().beginTransaction().add(R.id.fl_frgDetails, detailsFragment, "")
+                    .commit();
+        }
 
-        //}
     }
 
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        outState.putBoolean("first", false);
+        super.onSaveInstanceState(outState);
+    }
 }

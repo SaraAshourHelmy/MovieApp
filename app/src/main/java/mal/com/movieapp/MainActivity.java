@@ -14,14 +14,19 @@ import mal.com.fragment.MovieFragment;
 
 public class MainActivity extends AppCompatActivity implements MovieInterface {
 
-    private boolean isTowPane = false;
+    private static boolean isTowPane = false;
     SharedPreferences sharedPreferences;
     public static final String SHARED_NAME = "CHECK_FIRST";
+    private boolean first = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        if (savedInstanceState != null) {
+            first = savedInstanceState.getBoolean("first", true);
+        }
+
         checkFirstRun();
         initView();
 
@@ -49,15 +54,23 @@ public class MainActivity extends AppCompatActivity implements MovieInterface {
 
 
     private void initView() {
-        MovieFragment movieFragment = new MovieFragment();
-        movieFragment.setMovieInterface(this);
-        getFragmentManager().beginTransaction()
-                .add(R.id.fl_frgList, movieFragment, "").commit();
+        MovieFragment movieFragment;
+        if (first) {
+            isTowPane = false;
+            movieFragment = new MovieFragment();
 
-        if (null != findViewById(R.id.fl_frgDetails)) {
-            isTowPane = true;
-            Log.e("tablet", "true");
+            getFragmentManager().beginTransaction()
+                    .add(R.id.fl_frgList, movieFragment, "MovieFragment").commit();
+
+            if (null != findViewById(R.id.fl_frgDetails)) {
+                isTowPane = true;
+                Log.e("tablet", "true");
+            }
+        } else {
+            movieFragment = (MovieFragment)
+                    getFragmentManager().findFragmentByTag("MovieFragment");
         }
+        movieFragment.setMovieInterface(this);
 
     }
 
@@ -83,6 +96,12 @@ public class MainActivity extends AppCompatActivity implements MovieInterface {
             intent.putExtra("bundle", bundle);
             startActivity(intent);
         }
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        outState.putBoolean("first", false);
+        super.onSaveInstanceState(outState);
     }
 }
 

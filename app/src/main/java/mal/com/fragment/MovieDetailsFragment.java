@@ -79,12 +79,10 @@ public class MovieDetailsFragment extends Fragment implements
     private void initViews(View view) {
 
         if (first) {
-            SetData();
+            adapter_trailers = null;
             lst_trailer = new ArrayList<>();
-            flag_fav = DBOperations.getMovie(getActivity(), movieId);
-            Log.e("favourite", flag_fav + "");
-
         }
+
         imgV_favourite = (ImageView) view.findViewById(R.id.img_fav);
         lstV_trailers = (ListView) view.findViewById(R.id.lstV_trailers);
         btn_reviews = (Button) view.findViewById(R.id.btn_reviews);
@@ -93,15 +91,22 @@ public class MovieDetailsFragment extends Fragment implements
         tv_date = (TextView) view.findViewById(R.id.tv_movie_date);
         tv_overView = (TextView) view.findViewById(R.id.tv_movie_overView);
         tv_vote = (TextView) view.findViewById(R.id.tv_movie_vote);
-        adapter_trailers = new TrailersAdapter(getActivity(), lst_trailer);
+
         imgV_favourite.setImageResource(flag_fav ? R.drawable.fav : R.drawable.unfav);
 
-
-        lstV_trailers.setAdapter(adapter_trailers);
+        if (adapter_trailers != null)
+            lstV_trailers.setAdapter(adapter_trailers);
         // lstV_reviews.setAdapter(adapter_reviews);
         lstV_trailers.setOnItemClickListener(this);
         btn_reviews.setOnClickListener(this);
         imgV_favourite.setOnClickListener(this);
+
+        if (first) {
+            SetData();
+            flag_fav = DBOperations.getMovie(getActivity(), movieId);
+            Log.e("favourite", flag_fav + "");
+
+        }
         setViewsData();
 
 
@@ -190,10 +195,8 @@ public class MovieDetailsFragment extends Fragment implements
     public void onClick(View v) {
         if (v == btn_reviews) {
 
-            Bundle bundle = new Bundle();
-            bundle.putString("url_reviews", urlReviews);
             Intent intent = new Intent(getActivity(), ReviewsActivity.class);
-            intent.putExtra("bundle", bundle);
+            intent.putExtra("url_reviews", urlReviews);
             startActivity(intent);
 
         } else if (v == imgV_favourite) {
@@ -236,13 +239,16 @@ public class MovieDetailsFragment extends Fragment implements
         @Override
         protected void onPostExecute(Void s) {
             super.onPostExecute(s);
-            adapter_trailers.AddALL(lst_trailer);
+            adapter_trailers = new TrailersAdapter(getActivity(), lst_trailer);
+            lstV_trailers.setAdapter(adapter_trailers);
+            //adapter_trailers.AddALL(lst_trailer);
 
         }
     }
 
     private void parseTrailers(String result) {
 
+        lst_trailer = new ArrayList<>();
         try {
             JSONObject jsonObject = new JSONObject(result);
             JSONArray resultLst = jsonObject.getJSONArray("results");
