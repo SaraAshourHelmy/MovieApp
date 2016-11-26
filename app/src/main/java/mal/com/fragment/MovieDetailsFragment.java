@@ -81,6 +81,7 @@ public class MovieDetailsFragment extends Fragment implements
         if (first) {
             adapter_trailers = null;
             lst_trailer = new ArrayList<>();
+
         }
 
         imgV_favourite = (ImageView) view.findViewById(R.id.img_fav);
@@ -92,7 +93,6 @@ public class MovieDetailsFragment extends Fragment implements
         tv_overView = (TextView) view.findViewById(R.id.tv_movie_overView);
         tv_vote = (TextView) view.findViewById(R.id.tv_movie_vote);
 
-        imgV_favourite.setImageResource(flag_fav ? R.drawable.fav : R.drawable.unfav);
 
         if (adapter_trailers != null)
             lstV_trailers.setAdapter(adapter_trailers);
@@ -107,6 +107,7 @@ public class MovieDetailsFragment extends Fragment implements
             Log.e("favourite", flag_fav + "");
 
         }
+        imgV_favourite.setImageResource(flag_fav ? R.drawable.fav : R.drawable.unfav);
         setViewsData();
 
 
