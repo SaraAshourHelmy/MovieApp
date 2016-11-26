@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">MovieApp</string>
+    <string name="API_KEY">2d26e5c941b2e27337a12190d63d3248</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="URL">http://api.themoviedb.org/3/movie/</string>
+    <string name="url_img">http://image.tmdb.org/t/p/</string>
+
+</resources>
